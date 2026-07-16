@@ -45,17 +45,17 @@ lending_club_sql_risk/
 
 ## Data Preparation
 
-The raw dataset (2.26M rows) was filtered and refined to 1,230,327 completed loans using the following steps:
+The raw dataset (2.26M rows) was filtered and refined to **1,230,327 completed loans** using the following steps:
 
-Selection of 15 key columns highly relevant to credit risk.
+- **Selection of 15 key columns** highly relevant to credit risk.
 
-Domain-specific null handling: For instance, null values in delinq_2yrs (historical delinquencies) were filled with 0 after discovering they systematically belonged to loans under an older credit policy, rather than representing random missing data.
+- **Domain-specific null handling:** For instance, null values in delinq_2yrs (historical delinquencies) were filled with 0 after discovering they systematically belonged to loans under an older credit policy, rather than representing random missing data.
 
-Type casting: term and emp_length (text → integer), and issue_d (text → date).
+- **Type casting:** term and emp_length (text → integer), and issue_d (text → date).
 
-Target variable construction (default): A binary flag (1 = Charged Off, 0 = Fully Paid), excluding active loans (Current) since their outcome is still unknown and would contaminate the analysis.
+- **Target variable construction (default):** A binary flag (1 = Charged Off, 0 = Fully Paid), excluding active loans (Current) since their outcome is still unknown and would contaminate the analysis.
 
-Outlier treatment: Distinguishing data entry errors (negative DTI or DTI > 100, absurd income values) from legitimate, high-income outliers.
+- **Outlier treatment:** Distinguishing data entry errors (negative DTI or DTI > 100, absurd income values) from legitimate, high-income outliers.
 
 ---
 
@@ -98,22 +98,17 @@ When crossing grade with loan purpose, the grade heavily dominates the purpose: 
 ## Applied SQL Techniques
 
 - **Window Functions:** 'SUM() OVER ()' to compute Pareto metrics (running totals and percentages of the total), and 'LAG()' for YoY delta analysis.
-
 - **Common Table Expressions (CTEs):** Used to modularize aggregates-on-aggregates (such as cohorts with multi-step deltas).
-
 - **Conditional Aggregation:** 'AVG(default_flag)' used to compute the default rate, and 'SUM(default_flag)' for absolute counts.
-
 - **Group Filtering:** 'HAVING COUNT(*) >= 500' to exclude combinations lacking sufficient statistical significance.
+
 ---
 
 ## Next Steps
 
 - **Predictive Default Modeling:** With the clean dataset and binary target variable already built, the next natural step is to train a classification model (Logistic Regression as a baseline, followed by Random Forests/XGBoost) to predict individual loan default probabilities.
-
 - **Loss Severity Analysis (LGD):** Incorporate recovery data to estimate not just if a loan will default, but how much capital is actually lost (Loss Given Default).
-
 - **Borrower Segmentation:** Cluster borrowers by risk profile to develop risk-based pricing strategies.
-
 - **Interactive Dashboard:** Connect these findings to a Power BI dashboard for real-time portfolio risk monitoring.
 
 ---
@@ -121,11 +116,8 @@ When crossing grade with loan purpose, the grade heavily dominates the purpose: 
 # How to Reproduce
 
 1. Download the LendingClub dataset (see instructions in 'data/README.md').
-
 2. Run '01_data_cleaning.ipynb' to generate the clean CSV file.
-
 3. Create the database schema in PostgreSQL and load the clean data.
-
 4. Execute the SQL scripts located in '02_risk_analysis.sql'.
 
-5. *Portfolio project focused on credit risk analysis in P2P lending and fintech.*
+*Portfolio project focused on credit risk analysis in P2P lending and fintech.*
