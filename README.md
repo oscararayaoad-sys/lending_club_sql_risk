@@ -48,13 +48,9 @@ lending_club_sql_risk/
 The raw dataset (2.26M rows) was filtered and refined to **1,230,327 completed loans** using the following steps:
 
 - **Selection of 15 key columns** highly relevant to credit risk.
-
 - **Domain-specific null handling:** For instance, null values in delinq_2yrs (historical delinquencies) were filled with 0 after discovering they systematically belonged to loans under an older credit policy, rather than representing random missing data.
-
 - **Type casting:** term and emp_length (text → integer), and issue_d (text → date).
-
 - **Target variable construction (default):** A binary flag (1 = Charged Off, 0 = Fully Paid), excluding active loans (Current) since their outcome is still unknown and would contaminate the analysis.
-
 - **Outlier treatment:** Distinguishing data entry errors (negative DTI or DTI > 100, absurd income values) from legitimate, high-income outliers.
 
 ---
